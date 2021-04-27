@@ -111,6 +111,11 @@ public class GraphQLLanguageInjectionUtil {
             if (commentBasedInjectionHelper != null) {
                 return commentBasedInjectionHelper.isGraphQLInjectedUsingComment(host, envRef);
             }
+            // also check if template string starts with #graphql
+            final String templateContent = template.getText();
+            if (templateContent.startsWith("`#graphql")) {
+                return true;
+            }
         }
         return false;
     }
@@ -132,7 +137,7 @@ public class GraphQLLanguageInjectionUtil {
         if (GQL_TEMPLATE_TAG.equals(tagText)) {
             return PropertiesComponent.getInstance(host.getProject()).getValue(PROJECT_GQL_ENV, DEFAULT_GQL_ENVIRONMENT);
         }
-        
+
         if (APOLLO_GQL_TEMPLATE_TAG.equals(tagText)) {
             return APOLLO_ENVIRONMENT;
         }
